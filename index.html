@@ -144,25 +144,7 @@
             cursor: pointer;
         }
 
-        .add-color {
-            width: 60px;
-            height: 60px;
-            border: 3px dashed #ccc;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 24px;
-            color: #666;
-            transition: all 0.3s ease;
-        }
 
-        .add-color:hover {
-            border-color: #667eea;
-            color: #667eea;
-            transform: scale(1.1);
-        }
 
         .controls {
             display: flex;
@@ -200,6 +182,12 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+        }
+
+        .replace-button-container {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
         }
 
         .image-box {
@@ -536,7 +524,6 @@
                 </div>
 
                 <div class="controls">
-                    <button onclick="replacePalette()" id="replaceBtn" disabled>🎨 Replace Palette</button>
                     <button onclick="downloadImage()" id="downloadBtn" disabled style="display: none;">💾 Download Result</button>
                     <button onclick="downloadPaletteStrip()" id="downloadPaletteBtn" disabled>🎨 Download Palette Strip</button>
                 </div>
@@ -549,6 +536,11 @@
                         <h3>Original Image</h3>
                         <canvas id="originalCanvas"></canvas>
                     </div>
+                    
+                    <div class="replace-button-container">
+                        <button onclick="replacePalette()" id="replaceBtn" disabled>🎨 Replace Palette</button>
+                    </div>
+                    
                     <div class="image-box">
                         <h3>Result</h3>
                         <canvas id="resultCanvas"></canvas>
@@ -752,6 +744,11 @@
                 // Automatically extract palette
                 extractPalette();
                 
+                // Auto-replace palette if we have a new palette
+                if (newPaletteColors.length === 6) {
+                    replacePalette();
+                }
+                
                 // Setup canvas click listeners
                 setupCanvasClickListeners();
             };
@@ -803,6 +800,11 @@
             displayNewPalette();
             updateReplaceButton();
             
+            // Auto-replace palette
+            if (originalImageData && newPaletteColors.length === 6) {
+                replacePalette();
+            }
+            
             // Visual feedback
             const paletteOptions = document.querySelectorAll('.palette-option');
             paletteOptions.forEach(option => option.classList.remove('selected'));
@@ -850,6 +852,11 @@
                     
                     // Automatically extract palette
                     extractPalette();
+                    
+                    // Auto-replace palette if we have a new palette
+                    if (newPaletteColors.length === 6) {
+                        replacePalette();
+                    }
                     
                     // Setup canvas click listeners
                     setupCanvasClickListeners();
@@ -976,13 +983,7 @@
                 container.appendChild(colorDiv);
             });
 
-            if (containerId === 'newPalette' && colors.length < 6) {
-                const addButton = document.createElement('div');
-                addButton.className = 'add-color';
-                addButton.textContent = '+';
-                addButton.onclick = addColor;
-                container.appendChild(addButton);
-            }
+
 
             // Add hex values display for new palette
             if (containerId === 'newPalette' && colors.length > 0) {
@@ -1013,14 +1014,7 @@
             paletteContainer.appendChild(hexContainer);
         }
 
-        function addColor() {
-            if (newPaletteColors.length >= 6) return;
-            
-            // Add a default black color
-            newPaletteColors.push({ r: 0, g: 0, b: 0 });
-            displayNewPalette();
-            updateReplaceButton();
-        }
+
 
         function changeColor(index) {
             currentEditingIndex = index;
@@ -1054,6 +1048,11 @@
                 newPaletteColors[currentEditingIndex] = { r, g, b };
                 displayNewPalette();
                 updateReplaceButton();
+                
+                // Auto-replace palette
+                if (originalImageData && newPaletteColors.length === 6) {
+                    replacePalette();
+                }
             }
         });
 
