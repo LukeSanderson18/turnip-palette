@@ -245,6 +245,20 @@
                 grid-template-columns: 1fr;
             }
             
+            .palette-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .palette-option {
+                padding: 12px;
+            }
+            
+            .palette-color-preview {
+                width: 16px;
+                height: 16px;
+            }
+            
             h1 {
                 font-size: 2em;
             }
@@ -316,6 +330,95 @@
             background: #f1f1f1;
             color: #666;
         }
+
+        /* Example palettes section */
+        .example-palettes {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .example-palettes h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.3em;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .palette-option {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .palette-option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .palette-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .palette-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .palette-preview {
+            display: flex;
+            gap: 3px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .palette-color-preview {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+
+        .apply-palette-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .apply-palette-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .apply-palette-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
     </style>
 </head>
 <body>
@@ -327,6 +430,14 @@
             <div>Click to upload an image or drag and drop</div>
             <div class="upload-text">Supports JPG, PNG, GIF</div>
             <input type="file" id="imageInput" accept="image/*">
+        </div>
+
+        <!-- Example Palettes Section -->
+        <div class="example-palettes">
+            <h3>🎨 Example Palettes</h3>
+            <div class="palette-grid" id="examplePalettesGrid">
+                <!-- Example palettes will be populated by JavaScript -->
+            </div>
         </div>
 
         <div class="palette-section">
@@ -386,30 +497,225 @@
         let newPaletteColors = [];
         let currentEditingIndex = -1;
 
-        // File upload handling
-        const uploadSection = document.getElementById('uploadSection');
-        const imageInput = document.getElementById('imageInput');
+        // Example palettes data
+        const examplePalettes = [
+            {
+                name: "Classic Game",
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 20, g: 20, b: 20 },        // Dark grey
+                    { r: 25, g: 25, b: 25 },        // Medium grey
+                    { r: 173, g: 173, b: 173 },     // Light grey
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                name: "Warm Sunset",
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 51, g: 25, b: 0 },         // Dark brown
+                    { r: 102, g: 51, b: 0 },        // Brown
+                    { r: 255, g: 128, b: 0 },       // Orange
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                name: "Cool Ocean",
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 0, g: 25, b: 51 },         // Dark blue
+                    { r: 0, g: 51, b: 102 },        // Blue
+                    { r: 0, g: 128, b: 255 },       // Light blue
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                name: "Forest Green",
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 0, g: 25, b: 0 },          // Dark green
+                    { r: 0, g: 51, b: 0 },          // Green
+                    { r: 0, g: 128, b: 0 },         // Light green
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                name: "Purple Dream",
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 25, g: 0, b: 51 },         // Dark purple
+                    { r: 51, g: 0, b: 102 },        // Purple
+                    { r: 128, g: 0, b: 255 },       // Light purple
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                name: "Fire Red",
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 51, g: 0, b: 0 },          // Dark red
+                    { r: 102, g: 0, b: 0 },         // Red
+                    { r: 255, g: 0, b: 0 },         // Bright red
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                name: "Golden Hour",
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 51, g: 25, b: 0 },         // Dark brown
+                    { r: 102, g: 51, b: 0 },        // Brown
+                    { r: 255, g: 215, b: 0 },       // Gold
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                name: "Arctic Blue",
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 0, g: 25, b: 51 },         // Dark blue
+                    { r: 0, g: 51, b: 102 },        // Blue
+                    { r: 173, g: 216, b: 230 },     // Light blue
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            }
+        ];
 
-        uploadSection.addEventListener('click', () => imageInput.click());
-        uploadSection.addEventListener('dragover', handleDragOver);
-        uploadSection.addEventListener('drop', handleDrop);
-        uploadSection.addEventListener('dragleave', handleDragLeave);
+        // Initialize example palettes and load default image on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeExamplePalettes();
+            loadDefaultImage();
+        });
 
-        imageInput.addEventListener('change', handleFileSelect);
+        function initializeExamplePalettes() {
+            const grid = document.getElementById('examplePalettesGrid');
+            grid.innerHTML = '';
+
+            examplePalettes.forEach((palette, index) => {
+                const paletteOption = document.createElement('div');
+                paletteOption.className = 'palette-option';
+                paletteOption.dataset.index = index;
+
+                const paletteName = document.createElement('div');
+                paletteName.className = 'palette-name';
+                paletteName.textContent = palette.name;
+
+                const palettePreview = document.createElement('div');
+                palettePreview.className = 'palette-preview';
+
+                palette.colors.forEach(color => {
+                    const colorPreview = document.createElement('div');
+                    colorPreview.className = 'palette-color-preview';
+                    colorPreview.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                    palettePreview.appendChild(colorPreview);
+                });
+
+                const applyBtn = document.createElement('button');
+                applyBtn.className = 'apply-palette-btn';
+                applyBtn.textContent = 'Apply';
+                applyBtn.onclick = () => applyExamplePalette(index);
+
+                paletteOption.appendChild(paletteName);
+                paletteOption.appendChild(palettePreview);
+                paletteOption.appendChild(applyBtn);
+
+                grid.appendChild(paletteOption);
+            });
+        }
+
+        function applyExamplePalette(paletteIndex) {
+            const palette = examplePalettes[paletteIndex];
+            newPaletteColors = [...palette.colors]; // Deep copy
+            displayNewPalette();
+            updateReplaceButton();
+            
+            // Visual feedback
+            const paletteOptions = document.querySelectorAll('.palette-option');
+            paletteOptions.forEach(option => option.classList.remove('selected'));
+            paletteOptions[paletteIndex].classList.add('selected');
+            
+            // Remove selection after a short delay
+            setTimeout(() => {
+                paletteOptions[paletteIndex].classList.remove('selected');
+            }, 1000);
+        }
+
+        function loadDefaultImage() {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.getElementById('originalCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas size
+                canvas.width = img.width;
+                canvas.height = img.height;
+                
+                // Draw image
+                ctx.drawImage(img, 0, 0);
+                
+                // Store image data
+                originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                
+                // Show image container
+                document.getElementById('imageContainer').classList.remove('hidden');
+                
+                // Enable extract button and automatically extract palette
+                document.getElementById('extractBtn').disabled = false;
+                extractPalette();
+                
+                // Update upload section to show default image is loaded
+                const uploadSection = document.getElementById('uploadSection');
+                uploadSection.innerHTML = `
+                    <div style="font-size: 4em; margin-bottom: 15px;">✅</div>
+                    <div>Default image loaded! Click to upload a different image or drag and drop</div>
+                    <div class="upload-text">Supports JPG, PNG, GIF</div>
+                    <input type="file" id="imageInput" accept="image/*">
+                `;
+                
+                // Re-attach event listeners to the new upload section
+                setupUploadListeners();
+            };
+            img.onerror = function() {
+                console.log('Default image not found, continuing without it');
+            };
+            img.src = 'original.png';
+        }
+
+        function setupUploadListeners() {
+            const uploadSection = document.getElementById('uploadSection');
+            const imageInput = document.getElementById('imageInput');
+            
+            uploadSection.addEventListener('click', () => imageInput.click());
+            uploadSection.addEventListener('dragover', handleDragOver);
+            uploadSection.addEventListener('drop', handleDrop);
+            uploadSection.addEventListener('dragleave', handleDragLeave);
+            imageInput.addEventListener('change', handleFileSelect);
+        }
+
+        // File upload handling - setup initial listeners
+        setupUploadListeners();
 
         function handleDragOver(e) {
             e.preventDefault();
-            uploadSection.classList.add('dragover');
+            e.currentTarget.classList.add('dragover');
         }
 
         function handleDragLeave(e) {
             e.preventDefault();
-            uploadSection.classList.remove('dragover');
+            e.currentTarget.classList.remove('dragover');
         }
 
         function handleDrop(e) {
             e.preventDefault();
-            uploadSection.classList.remove('dragover');
+            e.currentTarget.classList.remove('dragover');
             const files = e.dataTransfer.files;
             if (files.length > 0) {
                 loadImage(files[0]);
@@ -446,6 +752,18 @@
                     // Enable buttons
                     document.getElementById('extractBtn').disabled = false;
                     updateReplaceButton();
+                    
+                    // Update upload section to show new image is loaded
+                    const uploadSection = document.getElementById('uploadSection');
+                    uploadSection.innerHTML = `
+                        <div style="font-size: 4em; margin-bottom: 15px;">📸</div>
+                        <div>New image loaded! Click to upload a different image or drag and drop</div>
+                        <div class="upload-text">Supports JPG, PNG, GIF</div>
+                        <input type="file" id="imageInput" accept="image/*">
+                    `;
+                    
+                    // Re-attach event listeners
+                    setupUploadListeners();
                 };
                 img.src = e.target.result;
             };
