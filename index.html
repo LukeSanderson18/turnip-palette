@@ -19,13 +19,30 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .images-section {
+            position: relative;
         }
 
         h1 {
@@ -39,35 +56,7 @@
             background-clip: text;
         }
 
-        .upload-section {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
 
-        .upload-section:hover {
-            border-color: #764ba2;
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .upload-section.dragover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: scale(1.02);
-        }
-
-        #imageInput {
-            display: none;
-        }
-
-        .upload-text {
-            font-size: 1.2em;
-            color: #666;
-            margin-top: 10px;
-        }
 
         .palette-section {
             display: grid;
@@ -208,10 +197,9 @@
         }
 
         .image-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .image-box {
@@ -220,6 +208,8 @@
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .image-box h3 {
@@ -233,6 +223,58 @@
             height: auto;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        canvas:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        /* Full-size image overlay */
+        .image-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            cursor: pointer;
+        }
+
+        .image-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .image-overlay .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 2em;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .image-overlay .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .hidden {
@@ -240,8 +282,12 @@
         }
 
         @media (max-width: 768px) {
-            .palette-section,
-            .image-container {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .palette-section {
                 grid-template-columns: 1fr;
             }
             
@@ -379,6 +425,23 @@
             min-width: 120px;
         }
 
+        .image-option.upload-option {
+            border: 2px dashed #ccc;
+            background: #f9f9f9;
+            min-width: 80px;
+        }
+
+        .image-option.upload-option:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .image-option.upload-option .upload-icon {
+            font-size: 2em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
         .image-option:hover {
             border-color: #667eea;
             transform: translateY(-2px);
@@ -499,60 +562,58 @@
     <div class="container">
         <h1>🎨 Image Palette Replacer</h1>
         
-        <!-- Image Selector Section -->
-        <div class="image-selector">
-            <h3>🖼️ Choose Your Image</h3>
-            <div class="image-options" id="imageOptions">
-                <!-- Image options will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <div class="upload-section" id="uploadSection">
-            <div style="font-size: 4em; margin-bottom: 15px;">📸</div>
-            <div>Or upload your own image</div>
-            <div class="upload-text">Supports JPG, PNG, GIF</div>
-            <input type="file" id="imageInput" accept="image/*">
-        </div>
-
-        <!-- Example Palettes Section -->
-        <div class="example-palettes">
-            <h3>🎨 Color Palettes</h3>
-            <div class="palette-grid" id="examplePalettesGrid">
-                <!-- Example palettes will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <div class="palette-section">
-            <div class="palette-container">
-                <div class="palette-title">Original Palette</div>
-                <div class="palette-colors" id="originalPalette"></div>
-            </div>
-
-            <div class="palette-container">
-                <div class="palette-title">New Palette</div>
-                <div class="palette-colors" id="newPalette">
-                    <div class="add-color" onclick="addColor()">+</div>
+        <div class="main-layout">
+            <!-- Left side - Controls -->
+            <div class="controls-section">
+                <!-- Image Selector Section -->
+                <div class="image-selector">
+                    <h3>🖼️ Choose Your Image</h3>
+                    <div class="image-options" id="imageOptions">
+                        <!-- Image options will be populated by JavaScript -->
+                    </div>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
                 </div>
-                <div style="text-align: center; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <button onclick="copyOriginalPalette()" id="copyBtn" disabled>Copy Original</button>
-                    <button onclick="clearNewPalette()">Clear Palette</button>
+
+                <!-- Example Palettes Section -->
+                <div class="example-palettes">
+                    <h3>🎨 Color Palettes</h3>
+                    <div class="palette-grid" id="examplePalettesGrid">
+                        <!-- Example palettes will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="palette-section">
+                    <div class="palette-container">
+                        <div class="palette-title">Original Palette</div>
+                        <div class="palette-colors" id="originalPalette"></div>
+                    </div>
+
+                    <div class="palette-container">
+                        <div class="palette-title">New Palette</div>
+                        <div class="palette-colors" id="newPalette">
+                            <div class="add-color" onclick="addColor()">+</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button onclick="replacePalette()" id="replaceBtn" disabled>🎨 Replace Palette</button>
+                    <button onclick="downloadImage()" id="downloadBtn" disabled style="display: none;">💾 Download Result</button>
                 </div>
             </div>
-        </div>
 
-        <div class="controls">
-            <button onclick="replacePalette()" id="replaceBtn" disabled>🎨 Replace Palette</button>
-            <button onclick="downloadImage()" id="downloadBtn" disabled style="display: none;">💾 Download Result</button>
-        </div>
-
-        <div class="image-container hidden" id="imageContainer">
-            <div class="image-box">
-                <h3>Original Image</h3>
-                <canvas id="originalCanvas"></canvas>
-            </div>
-            <div class="image-box">
-                <h3>Result</h3>
-                <canvas id="resultCanvas"></canvas>
+            <!-- Right side - Images -->
+            <div class="images-section">
+                <div class="image-container hidden" id="imageContainer">
+                    <div class="image-box">
+                        <h3>Original Image</h3>
+                        <canvas id="originalCanvas"></canvas>
+                    </div>
+                    <div class="image-box">
+                        <h3>Result</h3>
+                        <canvas id="resultCanvas"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -567,6 +628,12 @@
                 <button class="cancel-btn" onclick="cancelColorChange()">Cancel</button>
             </div>
         </div>
+    </div>
+
+    <!-- Image overlay for full-size display -->
+    <div class="image-overlay" id="imageOverlay">
+        <button class="close-btn" onclick="closeImageOverlay()">×</button>
+        <img id="overlayImage" src="" alt="Full size image">
     </div>
 
     <script>
@@ -671,6 +738,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializeImageSelector();
             initializeExamplePalettes();
+            setupCanvasClickListeners();
+            // Set the first example palette as default
+            applyExamplePalette(0);
             // Load the first image (original.png) by default
             loadImageFromFile('original.png');
         });
@@ -699,6 +769,23 @@
                 
                 imageOptions.appendChild(imageOption);
             });
+
+            // Add upload option
+            const uploadOption = document.createElement('div');
+            uploadOption.className = 'image-option upload-option';
+            uploadOption.onclick = () => document.getElementById('imageInput').click();
+            
+            const uploadIcon = document.createElement('div');
+            uploadIcon.className = 'upload-icon';
+            uploadIcon.textContent = '+';
+            
+            const uploadText = document.createElement('div');
+            uploadText.className = 'image-option-name';
+            uploadText.textContent = 'Upload';
+            
+            uploadOption.appendChild(uploadIcon);
+            uploadOption.appendChild(uploadText);
+            imageOptions.appendChild(uploadOption);
         }
 
         function selectImage(imageName, selectedElement) {
@@ -734,17 +821,8 @@
                 // Automatically extract palette
                 extractPalette();
                 
-                // Update upload section to show image is loaded
-                const uploadSection = document.getElementById('uploadSection');
-                uploadSection.innerHTML = `
-                    <div style="font-size: 4em; margin-bottom: 15px;">✅</div>
-                    <div>Image loaded! Or upload your own image</div>
-                    <div class="upload-text">Supports JPG, PNG, GIF</div>
-                    <input type="file" id="imageInput" accept="image/*">
-                `;
-                
-                // Re-attach event listeners to the new upload section
-                setupUploadListeners();
+                // Setup canvas click listeners
+                setupCanvasClickListeners();
             };
             img.onerror = function() {
                 console.log('Image not found:', imageName);
@@ -807,38 +885,10 @@
 
 
 
-        function setupUploadListeners() {
-            const uploadSection = document.getElementById('uploadSection');
-            const imageInput = document.getElementById('imageInput');
-            
-            uploadSection.addEventListener('click', () => imageInput.click());
-            uploadSection.addEventListener('dragover', handleDragOver);
-            uploadSection.addEventListener('drop', handleDrop);
-            uploadSection.addEventListener('dragleave', handleDragLeave);
-            imageInput.addEventListener('change', handleFileSelect);
-        }
-
         // File upload handling - setup initial listeners
-        setupUploadListeners();
+        document.getElementById('imageInput').addEventListener('change', handleFileSelect);
 
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.currentTarget.classList.add('dragover');
-        }
 
-        function handleDragLeave(e) {
-            e.preventDefault();
-            e.currentTarget.classList.remove('dragover');
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            e.currentTarget.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                loadImage(files[0]);
-            }
-        }
 
         function handleFileSelect(e) {
             if (e.target.files.length > 0) {
@@ -870,17 +920,8 @@
                     // Automatically extract palette
                     extractPalette();
                     
-                    // Update upload section to show new image is loaded
-                    const uploadSection = document.getElementById('uploadSection');
-                    uploadSection.innerHTML = `
-                        <div style="font-size: 4em; margin-bottom: 15px;">📸</div>
-                        <div>New image loaded! Click to upload a different image or drag and drop</div>
-                        <div class="upload-text">Supports JPG, PNG, GIF</div>
-                        <input type="file" id="imageInput" accept="image/*">
-                    `;
-                    
-                    // Re-attach event listeners
-                    setupUploadListeners();
+                    // Setup canvas click listeners
+                    setupCanvasClickListeners();
                 };
                 img.src = e.target.result;
             };
@@ -966,9 +1007,6 @@
 
             originalPaletteColors = sortedColors;
             displayPalette('originalPalette', sortedColors);
-            
-            // Enable copy button
-            document.getElementById('copyBtn').disabled = false;
             updateReplaceButton();
         }
 
@@ -1070,13 +1108,7 @@
             }
         });
 
-        function copyOriginalPalette() {
-            if (originalPaletteColors.length === 0) return;
-            
-            newPaletteColors = [...originalPaletteColors]; // Deep copy the array
-            displayNewPalette();
-            updateReplaceButton();
-        }
+
 
 
 
@@ -1147,11 +1179,7 @@
             displayPalette('newPalette', newPaletteColors);
         }
 
-        function clearNewPalette() {
-            newPaletteColors = [];
-            displayNewPalette();
-            updateReplaceButton();
-        }
+
 
         function updateReplaceButton() {
             const replaceBtn = document.getElementById('replaceBtn');
@@ -1238,6 +1266,50 @@
             link.href = canvas.toDataURL();
             link.click();
         }
+
+        // Image overlay functionality
+        function showImageOverlay(canvas) {
+            const overlay = document.getElementById('imageOverlay');
+            const overlayImg = document.getElementById('overlayImage');
+            
+            // Convert canvas to data URL
+            const dataURL = canvas.toDataURL();
+            overlayImg.src = dataURL;
+            overlay.style.display = 'flex';
+        }
+
+        function closeImageOverlay() {
+            const overlay = document.getElementById('imageOverlay');
+            overlay.style.display = 'none';
+        }
+
+        // Add click event listeners to canvases for full-size display
+        function setupCanvasClickListeners() {
+            const originalCanvas = document.getElementById('originalCanvas');
+            const resultCanvas = document.getElementById('resultCanvas');
+            
+            if (originalCanvas) {
+                originalCanvas.addEventListener('click', () => showImageOverlay(originalCanvas));
+            }
+            
+            if (resultCanvas) {
+                resultCanvas.addEventListener('click', () => showImageOverlay(resultCanvas));
+            }
+        }
+
+        // Close overlay when clicking outside the image
+        document.getElementById('imageOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImageOverlay();
+            }
+        });
+
+        // Close overlay with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImageOverlay();
+            }
+        });
     </script>
 </body>
 </html>
