@@ -549,6 +549,7 @@
         let originalPaletteColors = [];
         let newPaletteColors = [];
         let currentEditingIndex = -1;
+        let colorPickerCommitTimer = null;
 
         // Example palettes data
         const examplePalettes = [
@@ -1012,6 +1013,13 @@
                 newPaletteColors[currentEditingIndex] = { r, g, b };
                 displayNewPalette();
                 updateReplaceButton();
+                // Debounce commit so it triggers shortly after mouse/touch release
+                if (colorPickerCommitTimer) clearTimeout(colorPickerCommitTimer);
+                colorPickerCommitTimer = setTimeout(() => {
+                    if (originalImageData && newPaletteColors.length === 6) {
+                        replacePalette();
+                    }
+                }, 150);
             }
         });
 
@@ -1021,7 +1029,7 @@
                 replacePalette();
             }
         };
-        colorPickerEl.addEventListener('change', commitRenderIfReady);
+        // Commit on release immediately
         colorPickerEl.addEventListener('mouseup', commitRenderIfReady);
         colorPickerEl.addEventListener('touchend', commitRenderIfReady);
         colorPickerEl.addEventListener('blur', () => {
