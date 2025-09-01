@@ -366,22 +366,7 @@
             min-width: 120px;
         }
 
-        .image-option.upload-option {
-            border: 2px dashed #dee2e6;
-            background: #f8f9fa;
-            min-width: 80px;
-        }
 
-        .image-option.upload-option:hover {
-            border-color: #28a745;
-            background: rgba(40, 167, 69, 0.05);
-        }
-
-        .image-option.upload-option .upload-icon {
-            font-size: 2em;
-            color: #6c757d;
-            margin-bottom: 5px;
-        }
 
         .image-option:hover {
             border-color: #28a745;
@@ -486,7 +471,7 @@
                     <div class="image-options" id="imageOptions">
                         <!-- Image options will be populated by JavaScript -->
                     </div>
-                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+
                 </div>
 
                 <!-- Example Palettes Section -->
@@ -758,22 +743,7 @@
                 imageOptions.appendChild(imageOption);
             });
 
-            // Add upload option
-            const uploadOption = document.createElement('div');
-            uploadOption.className = 'image-option upload-option';
-            uploadOption.onclick = () => document.getElementById('imageInput').click();
-            
-            const uploadIcon = document.createElement('div');
-            uploadIcon.className = 'upload-icon';
-            uploadIcon.textContent = '+';
-            
-            const uploadText = document.createElement('div');
-            uploadText.className = 'image-option-name';
-            uploadText.textContent = 'Upload';
-            
-            uploadOption.appendChild(uploadIcon);
-            uploadOption.appendChild(uploadText);
-            imageOptions.appendChild(uploadOption);
+
         }
 
         function selectImage(imageName, selectedElement) {
@@ -873,53 +843,7 @@
 
 
 
-        // File upload handling - setup initial listeners
-        document.getElementById('imageInput').addEventListener('change', handleFileSelect);
 
-
-
-        function handleFileSelect(e) {
-            if (e.target.files.length > 0) {
-                loadImage(e.target.files[0]);
-            }
-        }
-
-        function loadImage(file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.getElementById('originalCanvas');
-                    const ctx = canvas.getContext('2d');
-                    
-                    // Set canvas size
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    
-                    // Draw image
-                    ctx.drawImage(img, 0, 0);
-                    
-                    // Store image data
-                    originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    
-                    // Show image container
-                    document.getElementById('imageContainer').classList.remove('hidden');
-                    
-                    // Automatically extract palette
-                    extractPalette();
-                    
-                    // Auto-replace palette if we have a new palette
-                    if (newPaletteColors.length === 6) {
-                        replacePalette();
-                    }
-                    
-                    // Setup canvas click listeners
-                    setupCanvasClickListeners();
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
 
         function extractPalette() {
             if (!originalImageData) return;
