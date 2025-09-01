@@ -245,18 +245,32 @@
                 grid-template-columns: 1fr;
             }
             
+            .image-options {
+                gap: 10px;
+            }
+            
+            .image-option {
+                min-width: 100px;
+                padding: 10px;
+            }
+            
+            .image-option img {
+                width: 50px;
+                height: 50px;
+            }
+            
             .palette-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 15px;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
             }
             
             .palette-option {
-                padding: 12px;
+                padding: 8px;
             }
             
             .palette-color-preview {
-                width: 16px;
-                height: 16px;
+                width: 14px;
+                height: 14px;
             }
             
             h1 {
@@ -331,33 +345,93 @@
             color: #666;
         }
 
-        /* Example palettes section */
+        /* Image selector section */
+        .image-selector {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+
+        .image-selector h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .image-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .image-option {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .image-option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .image-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .image-option img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 2px solid #f0f0f0;
+        }
+
+        .image-option-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.85em;
+        }
+
+        /* Example palettes section - more compact */
         .example-palettes {
             background: white;
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .example-palettes h3 {
             color: #2c3e50;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
-            font-size: 1.3em;
+            font-size: 1.2em;
         }
 
         .palette-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
         }
 
         .palette-option {
             border: 2px solid #eee;
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             background: white;
@@ -365,8 +439,8 @@
 
         .palette-option:hover {
             border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);
         }
 
         .palette-option.selected {
@@ -377,22 +451,22 @@
         .palette-name {
             font-weight: 600;
             color: #2c3e50;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-align: center;
-            font-size: 0.9em;
+            font-size: 0.8em;
         }
 
         .palette-preview {
             display: flex;
-            gap: 3px;
+            gap: 2px;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .palette-color-preview {
-            width: 20px;
-            height: 20px;
-            border-radius: 3px;
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
             border: 1px solid #ddd;
         }
 
@@ -401,9 +475,9 @@
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 15px;
-            font-size: 0.8em;
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -411,7 +485,7 @@
 
         .apply-palette-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
         }
 
         .apply-palette-btn:disabled {
@@ -425,16 +499,24 @@
     <div class="container">
         <h1>🎨 Image Palette Replacer</h1>
         
+        <!-- Image Selector Section -->
+        <div class="image-selector">
+            <h3>🖼️ Choose Your Image</h3>
+            <div class="image-options" id="imageOptions">
+                <!-- Image options will be populated by JavaScript -->
+            </div>
+        </div>
+
         <div class="upload-section" id="uploadSection">
             <div style="font-size: 4em; margin-bottom: 15px;">📸</div>
-            <div>Click to upload an image or drag and drop</div>
+            <div>Or upload your own image</div>
             <div class="upload-text">Supports JPG, PNG, GIF</div>
             <input type="file" id="imageInput" accept="image/*">
         </div>
 
         <!-- Example Palettes Section -->
         <div class="example-palettes">
-            <h3>🎨 Example Palettes</h3>
+            <h3>🎨 Color Palettes</h3>
             <div class="palette-grid" id="examplePalettesGrid">
                 <!-- Example palettes will be populated by JavaScript -->
             </div>
@@ -444,9 +526,6 @@
             <div class="palette-container">
                 <div class="palette-title">Original Palette</div>
                 <div class="palette-colors" id="originalPalette"></div>
-                <div style="text-align: center;">
-                    <button onclick="extractPalette()" id="extractBtn" disabled>Extract Palette</button>
-                </div>
             </div>
 
             <div class="palette-container">
@@ -456,7 +535,6 @@
                 </div>
                 <div style="text-align: center; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                     <button onclick="copyOriginalPalette()" id="copyBtn" disabled>Copy Original</button>
-                    <button onclick="copyGamePalette()">Copy Game Palette</button>
                     <button onclick="clearNewPalette()">Clear Palette</button>
                 </div>
             </div>
@@ -591,9 +669,88 @@
 
         // Initialize example palettes and load default image on page load
         document.addEventListener('DOMContentLoaded', function() {
+            initializeImageSelector();
             initializeExamplePalettes();
-            loadDefaultImage();
+            // Load the first image (original.png) by default
+            loadImageFromFile('original.png');
         });
+
+        function initializeImageSelector() {
+            const imageOptions = document.getElementById('imageOptions');
+            const images = ['original.png', 'original2.png', 'original3.png'];
+            
+            images.forEach((imageName, index) => {
+                const imageOption = document.createElement('div');
+                imageOption.className = 'image-option';
+                imageOption.dataset.image = imageName;
+                if (index === 0) imageOption.classList.add('selected');
+                
+                const img = document.createElement('img');
+                img.src = imageName;
+                img.alt = `Image ${index + 1}`;
+                
+                const name = document.createElement('div');
+                name.className = 'image-option-name';
+                name.textContent = `Image ${index + 1}`;
+                
+                imageOption.appendChild(img);
+                imageOption.appendChild(name);
+                imageOption.onclick = () => selectImage(imageName, imageOption);
+                
+                imageOptions.appendChild(imageOption);
+            });
+        }
+
+        function selectImage(imageName, selectedElement) {
+            // Update visual selection
+            document.querySelectorAll('.image-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedElement.classList.add('selected');
+            
+            // Load the selected image and extract palette
+            loadImageFromFile(imageName);
+        }
+
+        function loadImageFromFile(imageName) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.getElementById('originalCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas size
+                canvas.width = img.width;
+                canvas.height = img.height;
+                
+                // Draw image
+                ctx.drawImage(img, 0, 0);
+                
+                // Store image data
+                originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                
+                // Show image container
+                document.getElementById('imageContainer').classList.remove('hidden');
+                
+                // Automatically extract palette
+                extractPalette();
+                
+                // Update upload section to show image is loaded
+                const uploadSection = document.getElementById('uploadSection');
+                uploadSection.innerHTML = `
+                    <div style="font-size: 4em; margin-bottom: 15px;">✅</div>
+                    <div>Image loaded! Or upload your own image</div>
+                    <div class="upload-text">Supports JPG, PNG, GIF</div>
+                    <input type="file" id="imageInput" accept="image/*">
+                `;
+                
+                // Re-attach event listeners to the new upload section
+                setupUploadListeners();
+            };
+            img.onerror = function() {
+                console.log('Image not found:', imageName);
+            };
+            img.src = imageName;
+        }
 
         function initializeExamplePalettes() {
             const grid = document.getElementById('examplePalettesGrid');
@@ -648,46 +805,7 @@
             }, 1000);
         }
 
-        function loadDefaultImage() {
-            const img = new Image();
-            img.onload = function() {
-                const canvas = document.getElementById('originalCanvas');
-                const ctx = canvas.getContext('2d');
-                
-                // Set canvas size
-                canvas.width = img.width;
-                canvas.height = img.height;
-                
-                // Draw image
-                ctx.drawImage(img, 0, 0);
-                
-                // Store image data
-                originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                
-                // Show image container
-                document.getElementById('imageContainer').classList.remove('hidden');
-                
-                // Enable extract button and automatically extract palette
-                document.getElementById('extractBtn').disabled = false;
-                extractPalette();
-                
-                // Update upload section to show default image is loaded
-                const uploadSection = document.getElementById('uploadSection');
-                uploadSection.innerHTML = `
-                    <div style="font-size: 4em; margin-bottom: 15px;">✅</div>
-                    <div>Default image loaded! Click to upload a different image or drag and drop</div>
-                    <div class="upload-text">Supports JPG, PNG, GIF</div>
-                    <input type="file" id="imageInput" accept="image/*">
-                `;
-                
-                // Re-attach event listeners to the new upload section
-                setupUploadListeners();
-            };
-            img.onerror = function() {
-                console.log('Default image not found, continuing without it');
-            };
-            img.src = 'original.png';
-        }
+
 
         function setupUploadListeners() {
             const uploadSection = document.getElementById('uploadSection');
@@ -749,9 +867,8 @@
                     // Show image container
                     document.getElementById('imageContainer').classList.remove('hidden');
                     
-                    // Enable buttons
-                    document.getElementById('extractBtn').disabled = false;
-                    updateReplaceButton();
+                    // Automatically extract palette
+                    extractPalette();
                     
                     // Update upload section to show new image is loaded
                     const uploadSection = document.getElementById('uploadSection');
@@ -961,19 +1078,7 @@
             updateReplaceButton();
         }
 
-        function copyGamePalette() {
-            // Game palette: 000000, 141414, 191919, adadad, ffffff, ffffff
-            newPaletteColors = [
-                { r: 0, g: 0, b: 0 },           // #000000
-                { r: 20, g: 20, b: 20 },        // #141414
-                { r: 25, g: 25, b: 25 },        // #191919
-                { r: 173, g: 173, b: 173 },     // #adadad
-                { r: 255, g: 255, b: 255 },     // #ffffff
-                { r: 255, g: 255, b: 255 }      // #ffffff (duplicate)
-            ];
-            displayNewPalette();
-            updateReplaceButton();
-        }
+
 
         function removeColor(index) {
             newPaletteColors.splice(index, 1);
