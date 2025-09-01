@@ -553,167 +553,171 @@
         let newPaletteColors = [];
         let currentEditingIndex = -1;
 
-        // Example palettes data
+        // Example palettes data - inspired by creative game palettes
         const examplePalettes = [
+            // Classic Greyscale Palette
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 20, g: 20, b: 20 },        // Dark grey
-                    { r: 25, g: 25, b: 25 },        // Medium grey
-                    { r: 173, g: 173, b: 173 },     // Light grey
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
+                    { r: 0, g: 0, b: 0 },           // #000000 - Black
+                    { r: 20, g: 20, b: 20 },        // #141414 - Dark grey
+                    { r: 25, g: 25, b: 25 },        // #191919 - Medium grey
+                    { r: 173, g: 173, b: 173 },     // #ADADAD - Light grey
+                    { r: 255, g: 255, b: 255 },     // #FFFFFF - White
+                    { r: 255, g: 255, b: 255 }      // #FFFFFF - White accent
                 ]
             },
+            // Warm Sunset Palette
             {
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
-                    { r: 51, g: 25, b: 0 },         // Dark brown
-                    { r: 102, g: 51, b: 0 },        // Brown
-                    { r: 255, g: 128, b: 0 },       // Orange
+                    { r: 60, g: 30, b: 20 },        // Dark brown
+                    { r: 120, g: 60, b: 40 },       // Medium brown
+                    { r: 180, g: 90, b: 60 },       // Light brown
                     { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
+                    { r: 255, g: 200, b: 100 }      // Golden accent
                 ]
             },
+            // Cool Ocean Palette
             {
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
-                    { r: 0, g: 25, b: 51 },         // Dark blue
-                    { r: 0, g: 51, b: 102 },        // Blue
-                    { r: 0, g: 128, b: 255 },       // Light blue
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
-                ]
-            },
-            {
-                colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 0, g: 25, b: 0 },          // Dark green
-                    { r: 0, g: 51, b: 0 },          // Green
-                    { r: 0, g: 128, b: 0 },         // Light green
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
-                ]
-            },
-            {
-                colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 25, g: 0, b: 51 },         // Dark purple
-                    { r: 51, g: 0, b: 102 },        // Purple
-                    { r: 128, g: 0, b: 255 },       // Light purple
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
-                ]
-            },
-            {
-                colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 51, g: 0, b: 0 },          // Dark red
-                    { r: 102, g: 0, b: 0 },         // Red
-                    { r: 255, g: 0, b: 0 },         // Bright red
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
-                ]
-            },
-            {
-                colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 51, g: 25, b: 0 },         // Dark brown
-                    { r: 102, g: 51, b: 0 },        // Brown
-                    { r: 255, g: 215, b: 0 },       // Gold
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
-                ]
-            },
-            {
-                colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 0, g: 25, b: 51 },         // Dark blue
-                    { r: 0, g: 51, b: 102 },        // Blue
-                    { r: 173, g: 216, b: 230 },     // Light blue
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
-                ]
-            },
-            // New experimental palettes
-            {
-                colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 30, g: 15, b: 45 },        // Dark purple-grey
-                    { r: 60, g: 30, b: 90 },        // Purple-grey
-                    { r: 120, g: 60, b: 180 },      // Light purple
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
-                ]
-            },
-            {
-                colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 45, g: 30, b: 15 },        // Dark brown-grey
-                    { r: 90, g: 60, b: 30 },        // Brown-grey
-                    { r: 180, g: 120, b: 60 },      // Light brown
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
-                ]
-            },
-            {
-                colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 15, g: 30, b: 45 },        // Dark blue-grey
-                    { r: 30, g: 60, b: 90 },        // Blue-grey
+                    { r: 20, g: 40, b: 60 },        // Dark blue
+                    { r: 40, g: 80, b: 120 },       // Medium blue
                     { r: 60, g: 120, b: 180 },      // Light blue
                     { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
+                    { r: 100, g: 200, b: 255 }      // Cyan accent
                 ]
             },
+            // Forest Palette
             {
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
-                    { r: 30, g: 45, b: 15 },        // Dark green-grey
-                    { r: 60, g: 90, b: 30 },        // Green-grey
-                    { r: 120, g: 180, b: 60 },      // Light green
+                    { r: 30, g: 50, b: 20 },        // Dark green
+                    { r: 60, g: 100, b: 40 },       // Medium green
+                    { r: 90, g: 150, b: 60 },       // Light green
                     { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
+                    { r: 255, g: 100, b: 100 }      // Red accent
                 ]
             },
+            // Purple Dream Palette
             {
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
-                    { r: 45, g: 15, b: 30 },        // Dark red-grey
-                    { r: 90, g: 30, b: 60 },        // Red-grey
-                    { r: 180, g: 60, b: 120 },      // Light red
+                    { r: 50, g: 20, b: 60 },        // Dark purple
+                    { r: 100, g: 40, b: 120 },      // Medium purple
+                    { r: 150, g: 60, b: 180 },      // Light purple
                     { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
+                    { r: 255, g: 255, b: 100 }      // Yellow accent
                 ]
             },
+            // Fire Palette
             {
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
-                    { r: 20, g: 20, b: 20 },        // Dark grey
-                    { r: 40, g: 40, b: 40 },        // Medium grey
-                    { r: 80, g: 80, b: 80 },        // Light grey
-                    { r: 160, g: 160, b: 160 },     // Lighter grey
-                    { r: 255, g: 255, b: 255 }      // White
-                ]
-            },
-            {
-                colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 25, g: 25, b: 0 },         // Dark yellow-grey
-                    { r: 50, g: 50, b: 0 },         // Yellow-grey
-                    { r: 100, g: 100, b: 0 },       // Light yellow
+                    { r: 60, g: 20, b: 10 },        // Dark red
+                    { r: 120, g: 40, b: 20 },       // Medium red
+                    { r: 180, g: 60, b: 30 },       // Light red
                     { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
+                    { r: 255, g: 255, b: 200 }      // Cream accent
                 ]
             },
+            // Desert Palette
             {
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
-                    { r: 15, g: 15, b: 30 },        // Dark cyan-grey
-                    { r: 30, g: 30, b: 60 },        // Cyan-grey
-                    { r: 60, g: 60, b: 120 },       // Light cyan
+                    { r: 80, g: 60, b: 30 },        // Dark sand
+                    { r: 160, g: 120, b: 60 },      // Medium sand
+                    { r: 200, g: 180, b: 120 },     // Light sand
                     { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 255 }      // White (accent)
+                    { r: 255, g: 100, b: 150 }      // Pink accent
+                ]
+            },
+            // Arctic Palette
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 30, g: 40, b: 50 },        // Dark blue-grey
+                    { r: 60, g: 80, b: 100 },       // Medium blue-grey
+                    { r: 120, g: 160, b: 200 },     // Light blue
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 200, b: 100 }      // Orange accent
+                ]
+            },
+            // Autumn Palette
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 70, g: 40, b: 20 },        // Dark brown
+                    { r: 140, g: 80, b: 40 },       // Medium brown
+                    { r: 200, g: 120, b: 60 },      // Light brown
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 150, b: 50 }       // Orange accent
+                ]
+            },
+            // Night Sky Palette
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 20, g: 20, b: 40 },        // Dark navy
+                    { r: 40, g: 40, b: 80 },        // Medium navy
+                    { r: 80, g: 80, b: 160 },       // Light navy
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 100 }      // Yellow accent
+                ]
+            },
+            // Cherry Blossom Palette
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 60, g: 30, b: 40 },        // Dark pink
+                    { r: 120, g: 60, b: 80 },       // Medium pink
+                    { r: 180, g: 120, b: 140 },     // Light pink
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 100, g: 200, b: 255 }      // Blue accent
+                ]
+            },
+            // Moss Palette
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 50, g: 70, b: 40 },        // Dark moss
+                    { r: 100, g: 140, b: 80 },      // Medium moss
+                    { r: 150, g: 180, b: 120 },     // Light moss
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 180, b: 100 }      // Orange accent
+                ]
+            },
+            // Lavender Palette
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 40, g: 30, b: 50 },        // Dark purple
+                    { r: 80, g: 60, b: 100 },       // Medium purple
+                    { r: 140, g: 120, b: 160 },     // Light purple
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 200, b: 100 }      // Gold accent
+                ]
+            },
+            // Copper Palette
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 70, g: 50, b: 30 },        // Dark copper
+                    { r: 140, g: 100, b: 60 },      // Medium copper
+                    { r: 180, g: 140, b: 100 },     // Light copper
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 100, g: 255, b: 150 }      // Green accent
+                ]
+            },
+            // Midnight Palette
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 10, g: 10, b: 30 },        // Dark midnight
+                    { r: 20, g: 20, b: 60 },        // Medium midnight
+                    { r: 40, g: 40, b: 120 },       // Light midnight
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 100, b: 200 }      // Pink accent
                 ]
             }
         ];
