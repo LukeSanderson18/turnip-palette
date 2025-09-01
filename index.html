@@ -538,171 +538,160 @@
         let newPaletteColors = [];
         let currentEditingIndex = -1;
 
-        // Example palettes data - inspired by creative game palettes
+        // Example palettes data
         const examplePalettes = [
-            // Classic Greyscale Palette
+            // Original Greyscale (default)
             {
                 colors: [
                     { r: 0, g: 0, b: 0 },           // #000000 - Black
                     { r: 20, g: 20, b: 20 },        // #141414 - Dark grey
-                    { r: 25, g: 25, b: 25 },        // #191919 - Medium grey
+                    { r: 25, g: 25, b: 25 },        // #191919 - Mid grey
                     { r: 173, g: 173, b: 173 },     // #ADADAD - Light grey
                     { r: 255, g: 255, b: 255 },     // #FFFFFF - White
-                    { r: 255, g: 255, b: 255 }      // #FFFFFF - White accent
+                    { r: 255, g: 255, b: 255 }      // #FFFFFF - Accent (player)
                 ]
             },
-            // Warm Sunset Palette
+            // Synthwave Sunset
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 60, g: 30, b: 20 },        // Dark brown
-                    { r: 120, g: 60, b: 40 },       // Medium brown
-                    { r: 180, g: 90, b: 60 },       // Light brown
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 200, b: 100 }      // Golden accent
+                    { r: 10, g: 10, b: 15 },        // #0A0A0F - Near black
+                    { r: 27, g: 16, b: 58 },        // #1B103A - Deep purple
+                    { r: 46, g: 35, b: 108 },       // #2E236C - Indigo
+                    { r: 166, g: 140, b: 241 },     // #A68CF1 - Lavender
+                    { r: 242, g: 242, b: 242 },     // #F2F2F2 - Soft white
+                    { r: 255, g: 77, b: 255 }       // #FF4DFF - Neon pink (accent)
                 ]
             },
-            // Cool Ocean Palette
+            // Ocean Mist
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 20, g: 40, b: 60 },        // Dark blue
-                    { r: 40, g: 80, b: 120 },       // Medium blue
-                    { r: 60, g: 120, b: 180 },      // Light blue
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 100, g: 200, b: 255 }      // Cyan accent
+                    { r: 0, g: 18, b: 25 },         // #001219 - Abyss
+                    { r: 0, g: 78, b: 100 },        // #004E64 - Deep teal
+                    { r: 10, g: 147, b: 150 },      // #0A9396 - Teal
+                    { r: 148, g: 210, b: 189 },     // #94D2BD - Seafoam
+                    { r: 233, g: 245, b: 242 },     // #E9F5F2 - Foam white
+                    { r: 233, g: 245, b: 242 }      // #E9F5F2 - Accent (white)
                 ]
             },
-            // Forest Palette
+            // Autumn Ember
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 30, g: 50, b: 20 },        // Dark green
-                    { r: 60, g: 100, b: 40 },       // Medium green
-                    { r: 90, g: 150, b: 60 },       // Light green
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 100, b: 100 }      // Red accent
+                    { r: 14, g: 11, b: 9 },         // #0E0B09 - Ember black
+                    { r: 59, g: 31, b: 14 },        // #3B1F0E - Deep brown
+                    { r: 140, g: 47, b: 27 },       // #8C2F1B - Rust
+                    { r: 217, g: 135, b: 43 },      // #D9872B - Amber
+                    { r: 243, g: 233, b: 220 },     // #F3E9DC - Cream
+                    { r: 255, g: 78, b: 0 }         // #FF4E00 - Fire (accent)
                 ]
             },
-            // Purple Dream Palette
+            // Sakura Night
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 50, g: 20, b: 60 },        // Dark purple
-                    { r: 100, g: 40, b: 120 },      // Medium purple
-                    { r: 150, g: 60, b: 180 },      // Light purple
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 100 }      // Yellow accent
+                    { r: 11, g: 10, b: 19 },        // #0B0A13 - Night
+                    { r: 26, g: 27, b: 46 },        // #1A1B2E - Midnight
+                    { r: 58, g: 46, b: 95 },        // #3A2E5F - Plum
+                    { r: 245, g: 198, b: 214 },     // #F5C6D6 - Sakura
+                    { r: 255, g: 241, b: 245 },     // #FFF1F5 - Petal white
+                    { r: 255, g: 77, b: 109 }       // #FF4D6D - Cherry (accent)
                 ]
             },
-            // Fire Palette
+            // Arctic Frost
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 60, g: 20, b: 10 },        // Dark red
-                    { r: 120, g: 40, b: 20 },       // Medium red
-                    { r: 180, g: 60, b: 30 },       // Light red
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 200 }      // Cream accent
+                    { r: 10, g: 14, b: 18 },        // #0A0E12 - Polar night
+                    { r: 34, g: 48, b: 60 },        // #22303C - Steel
+                    { r: 58, g: 76, b: 89 },        // #3A4C59 - Slate
+                    { r: 187, g: 215, b: 230 },     // #BBD7E6 - Ice
+                    { r: 255, g: 255, b: 255 },     // #FFFFFF - Snow
+                    { r: 255, g: 255, b: 255 }      // #FFFFFF - Accent (white)
                 ]
             },
-            // Desert Palette
+            // Solaris Gold
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 80, g: 60, b: 30 },        // Dark sand
-                    { r: 160, g: 120, b: 60 },      // Medium sand
-                    { r: 200, g: 180, b: 120 },     // Light sand
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 100, b: 150 }      // Pink accent
+                    { r: 13, g: 12, b: 10 },        // #0D0C0A - Obsidian
+                    { r: 31, g: 30, b: 27 },        // #1F1E1B - Charcoal
+                    { r: 79, g: 61, b: 30 },        // #4F3D1E - Bronze
+                    { r: 194, g: 166, b: 107 },     // #C2A66B - Sand
+                    { r: 242, g: 240, b: 230 },     // #F2F0E6 - Alabaster
+                    { r: 255, g: 215, b: 0 }        // #FFD700 - Gold (accent)
                 ]
             },
-            // Arctic Palette
+            // Forest Spirit
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 30, g: 40, b: 50 },        // Dark blue-grey
-                    { r: 60, g: 80, b: 100 },       // Medium blue-grey
-                    { r: 120, g: 160, b: 200 },     // Light blue
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 200, b: 100 }      // Orange accent
+                    { r: 10, g: 15, b: 10 },        // #0A0F0A - Deep wood
+                    { r: 30, g: 45, b: 30 },        // #1E2D1E - Pine
+                    { r: 46, g: 72, b: 50 },        // #2E4832 - Moss
+                    { r: 136, g: 168, b: 137 },     // #88A889 - Lichen
+                    { r: 238, g: 243, b: 236 },     // #EEF3EC - Fog white
+                    { r: 238, g: 243, b: 236 }      // #EEF3EC - Accent (white)
                 ]
             },
-            // Autumn Palette
+            // Azure Dream
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 70, g: 40, b: 20 },        // Dark brown
-                    { r: 140, g: 80, b: 40 },       // Medium brown
-                    { r: 200, g: 120, b: 60 },      // Light brown
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 150, b: 50 }       // Orange accent
+                    { r: 10, g: 12, b: 18 },        // #0A0C12 - Night blue
+                    { r: 16, g: 32, b: 58 },        // #10203A - Deep blue
+                    { r: 30, g: 58, b: 138 },       // #1E3A8A - Royal
+                    { r: 147, g: 197, b: 253 },     // #93C5FD - Sky
+                    { r: 243, g: 248, b: 255 },     // #F3F8FF - Cloud white
+                    { r: 243, g: 248, b: 255 }      // #F3F8FF - Accent (white)
                 ]
             },
-            // Night Sky Palette
+            // Crimson Lotus
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 20, g: 20, b: 40 },        // Dark navy
-                    { r: 40, g: 40, b: 80 },        // Medium navy
-                    { r: 80, g: 80, b: 160 },       // Light navy
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 255, b: 100 }      // Yellow accent
+                    { r: 18, g: 10, b: 12 },        // #120A0C - Wine black
+                    { r: 42, g: 14, b: 23 },        // #2A0E17 - Bordeaux
+                    { r: 92, g: 26, b: 51 },        // #5C1A33 - Merlot
+                    { r: 224, g: 163, b: 182 },     // #E0A3B6 - Rose
+                    { r: 255, g: 247, b: 249 },     // #FFF7F9 - Porcelain
+                    { r: 255, g: 23, b: 68 }        // #FF1744 - Crimson (accent)
                 ]
             },
-            // Cherry Blossom Palette
+            // Cyber Lime
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 60, g: 30, b: 40 },        // Dark pink
-                    { r: 120, g: 60, b: 80 },       // Medium pink
-                    { r: 180, g: 120, b: 140 },     // Light pink
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 100, g: 200, b: 255 }      // Blue accent
+                    { r: 10, g: 10, b: 10 },        // #0A0A0A - Pitch
+                    { r: 20, g: 20, b: 20 },        // #141414 - Carbon
+                    { r: 31, g: 31, b: 31 },        // #1F1F1F - Graphite
+                    { r: 176, g: 190, b: 197 },     // #B0BEC5 - Alloy
+                    { r: 255, g: 255, b: 255 },     // #FFFFFF - White
+                    { r: 57, g: 255, b: 20 }        // #39FF14 - Neon lime (accent)
                 ]
             },
-            // Moss Palette
+            // Royal Amethyst
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 50, g: 70, b: 40 },        // Dark moss
-                    { r: 100, g: 140, b: 80 },      // Medium moss
-                    { r: 150, g: 180, b: 120 },     // Light moss
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 180, b: 100 }      // Orange accent
+                    { r: 11, g: 10, b: 16 },        // #0B0A10 - Dusk
+                    { r: 27, g: 21, b: 48 },        // #1B1530 - Grape
+                    { r: 62, g: 47, b: 109 },       // #3E2F6D - Amethyst
+                    { r: 201, g: 182, b: 228 },     // #C9B6E4 - Lilac
+                    { r: 247, g: 244, b: 251 },     // #F7F4FB - Pearl
+                    { r: 247, g: 244, b: 251 }      // #F7F4FB - Accent (white)
                 ]
             },
-            // Lavender Palette
+            // Tropic Tide
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 40, g: 30, b: 50 },        // Dark purple
-                    { r: 80, g: 60, b: 100 },       // Medium purple
-                    { r: 140, g: 120, b: 160 },     // Light purple
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 200, b: 100 }      // Gold accent
+                    { r: 8, g: 16, b: 15 },         // #08100F - Depths
+                    { r: 14, g: 42, b: 45 },        // #0E2A2D - Kelp
+                    { r: 31, g: 111, b: 110 },      // #1F6F6E - Jade
+                    { r: 179, g: 237, b: 226 },     // #B3EDE2 - Mist
+                    { r: 255, g: 255, b: 255 },     // #FFFFFF - White
+                    { r: 255, g: 111, b: 97 }       // #FF6F61 - Coral (accent)
                 ]
             },
-            // Copper Palette
+            // Ember Sky
             {
                 colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 70, g: 50, b: 30 },        // Dark copper
-                    { r: 140, g: 100, b: 60 },      // Medium copper
-                    { r: 180, g: 140, b: 100 },     // Light copper
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 100, g: 255, b: 150 }      // Green accent
-                ]
-            },
-            // Midnight Palette
-            {
-                colors: [
-                    { r: 0, g: 0, b: 0 },           // Black
-                    { r: 10, g: 10, b: 30 },        // Dark midnight
-                    { r: 20, g: 20, b: 60 },        // Medium midnight
-                    { r: 40, g: 40, b: 120 },       // Light midnight
-                    { r: 255, g: 255, b: 255 },     // White
-                    { r: 255, g: 100, b: 200 }      // Pink accent
+                    { r: 10, g: 12, b: 11 },        // #0A0C0B - Ash
+                    { r: 28, g: 35, b: 36 },        // #1C2324 - Charcoal
+                    { r: 47, g: 58, b: 61 },        // #2F3A3D - Slate
+                    { r: 170, g: 183, b: 184 },     // #AAB7B8 - Fog
+                    { r: 244, g: 247, b: 247 },     // #F4F7F7 - White
+                    { r: 255, g: 149, b: 0 }        // #FF9500 - Ember (accent)
                 ]
             }
         ];
