@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Palette Replacer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .upload-section {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-section:hover {
+            border-color: #764ba2;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-section.dragover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+
+        #imageInput {
+            display: none;
+        }
+
+        .upload-text {
+            font-size: 1.2em;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .palette-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .palette-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .palette-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .palette-colors {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .color-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            border: 3px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            user-select: none;
+        }
+
+        .color-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-item.dragging {
+            opacity: 0.5;
+            transform: scale(1.1) rotate(5deg);
+            z-index: 1000;
+        }
+
+        .color-item.drag-over {
+            border-color: #667eea;
+            border-width: 4px;
+        }
+
+        .color-item .delete-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 12px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .color-item:hover .delete-btn {
+            display: flex;
+        }
+
+        .color-input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .add-color {
+            width: 60px;
+            height: 60px;
+            border: 3px dashed #ccc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .add-color:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .image-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .image-box {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .image-box h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .palette-section,
+            .image-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+
+        /* Color picker modal */
+        .color-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .color-modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            min-width: 300px;
+        }
+
+        .color-modal h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .color-modal input[type="color"] {
+            width: 100px;
+            height: 100px;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .color-modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .color-modal button {
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+
+        .set-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #f1f1f1;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Image Palette Replacer</h1>
+        
+        <div class="upload-section" id="uploadSection">
+            <div style="font-size: 4em; margin-bottom: 15px;">📸</div>
+            <div>Click to upload an image or drag and drop</div>
+            <div class="upload-text">Supports JPG, PNG, GIF</div>
+            <input type="file" id="imageInput" accept="image/*">
+        </div>
+
+        <div class="palette-section">
+            <div class="palette-container">
+                <div class="palette-title">Original Palette</div>
+                <div class="palette-colors" id="originalPalette"></div>
+                <div style="text-align: center;">
+                    <button onclick="extractPalette()" id="extractBtn" disabled>Extract Palette</button>
+                </div>
+            </div>
+
+            <div class="palette-container">
+                <div class="palette-title">New Palette</div>
+                <div class="palette-colors" id="newPalette">
+                    <div class="add-color" onclick="addColor()">+</div>
+                </div>
+                <div style="text-align: center; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="copyOriginalPalette()" id="copyBtn" disabled>Copy Original</button>
+                    <button onclick="copyGamePalette()">Copy Game Palette</button>
+                    <button onclick="clearNewPalette()">Clear Palette</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="replacePalette()" id="replaceBtn" disabled>🎨 Replace Palette</button>
+            <button onclick="downloadImage()" id="downloadBtn" disabled style="display: none;">💾 Download Result</button>
+        </div>
+
+        <div class="image-container hidden" id="imageContainer">
+            <div class="image-box">
+                <h3>Original Image</h3>
+                <canvas id="originalCanvas"></canvas>
+            </div>
+            <div class="image-box">
+                <h3>Result</h3>
+                <canvas id="resultCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Color picker modal -->
+    <div class="color-modal" id="colorModal">
+        <div class="color-modal-content">
+            <h3>Choose Color</h3>
+            <input type="color" id="modalColorPicker" value="#000000">
+            <div class="color-modal-buttons">
+                <button class="set-btn" onclick="setColor()">Set</button>
+                <button class="cancel-btn" onclick="cancelColorChange()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let originalImageData = null;
+        let originalPaletteColors = [];
+        let newPaletteColors = [];
+        let currentEditingIndex = -1;
+
+        // File upload handling
+        const uploadSection = document.getElementById('uploadSection');
+        const imageInput = document.getElementById('imageInput');
+
+        uploadSection.addEventListener('click', () => imageInput.click());
+        uploadSection.addEventListener('dragover', handleDragOver);
+        uploadSection.addEventListener('drop', handleDrop);
+        uploadSection.addEventListener('dragleave', handleDragLeave);
+
+        imageInput.addEventListener('change', handleFileSelect);
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadSection.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                loadImage(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            if (e.target.files.length > 0) {
+                loadImage(e.target.files[0]);
+            }
+        }
+
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.getElementById('originalCanvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Set canvas size
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    
+                    // Draw image
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Store image data
+                    originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    
+                    // Show image container
+                    document.getElementById('imageContainer').classList.remove('hidden');
+                    
+                    // Enable buttons
+                    document.getElementById('extractBtn').disabled = false;
+                    updateReplaceButton();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function extractPalette() {
+            if (!originalImageData) return;
+
+            const colors = new Map();
+            const data = originalImageData.data;
+
+            // Sample colors (every 4th pixel for performance)
+            for (let i = 0; i < data.length; i += 16) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const colorKey = `${r},${g},${b}`;
+                colors.set(colorKey, (colors.get(colorKey) || 0) + 1);
+            }
+
+            // Get most common colors
+            const allColors = Array.from(colors.entries())
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 12) // Get more colors to work with
+                .map(([color]) => {
+                    const [r, g, b] = color.split(',').map(Number);
+                    return { r, g, b };
+                });
+
+            // Separate greyscale and colored pixels
+            const greyscaleColors = [];
+            const accentColors = [];
+
+            allColors.forEach(color => {
+                const { r, g, b } = color;
+                // Check if it's greyscale (low color variation)
+                const max = Math.max(r, g, b);
+                const min = Math.min(r, g, b);
+                const colorfulness = max - min;
+                
+                if (colorfulness < 30) { // Threshold for considering it greyscale
+                    greyscaleColors.push(color);
+                } else {
+                    accentColors.push(color);
+                }
+            });
+
+            // Sort greyscale by brightness (dark to light)
+            greyscaleColors.sort((a, b) => {
+                const brightnessA = (a.r + a.g + a.b) / 3;
+                const brightnessB = (b.r + b.g + b.b) / 3;
+                return brightnessA - brightnessB;
+            });
+
+            // Take exactly 5 greyscale colors, filling gaps if needed
+            const finalGreyscale = [];
+            if (greyscaleColors.length >= 5) {
+                // Take 5 evenly distributed colors
+                for (let i = 0; i < 5; i++) {
+                    const index = Math.floor(i * (greyscaleColors.length - 1) / 4);
+                    finalGreyscale.push(greyscaleColors[index]);
+                }
+            } else {
+                // Add existing greyscale colors
+                finalGreyscale.push(...greyscaleColors);
+                // Fill remaining slots with generated greyscale colors
+                const steps = 5;
+                for (let i = finalGreyscale.length; i < 5; i++) {
+                    const brightness = Math.floor((i / (steps - 1)) * 255);
+                    finalGreyscale.push({ r: brightness, g: brightness, b: brightness });
+                }
+            }
+
+            // Get the most colorful accent color (or create a default green one)
+            let accentColor = { r: 100, g: 150, b: 100 }; // Default green
+            if (accentColors.length > 0) {
+                accentColor = accentColors[0]; // Most common non-greyscale color
+            }
+
+            // Combine: 5 greyscale + 1 accent = 6 total
+            const sortedColors = [...finalGreyscale, accentColor];
+
+            originalPaletteColors = sortedColors;
+            displayPalette('originalPalette', sortedColors);
+            
+            // Enable copy button
+            document.getElementById('copyBtn').disabled = false;
+            updateReplaceButton();
+        }
+
+        function displayPalette(containerId, colors) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            colors.forEach((color, index) => {
+                const colorDiv = document.createElement('div');
+                colorDiv.className = 'color-item';
+                colorDiv.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                colorDiv.title = `RGB(${color.r}, ${color.g}, ${color.b})`;
+                
+                // Add index number for reference
+                if (containerId === 'originalPalette') {
+                    colorDiv.title += ` (Index: ${index})`;
+                }
+                
+                if (containerId === 'newPalette') {
+                    // Make clickable to change color
+                    colorDiv.onclick = () => changeColor(index);
+                    
+                    // Make draggable
+                    colorDiv.draggable = true;
+                    colorDiv.dataset.index = index;
+                    
+                    // Add delete button
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.textContent = '×';
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        removeColor(index);
+                    };
+                    colorDiv.appendChild(deleteBtn);
+                    
+                    // Drag and drop events
+                    colorDiv.addEventListener('dragstart', handleDragStart);
+                    colorDiv.addEventListener('dragover', handleDragOver);
+                    colorDiv.addEventListener('drop', handleDrop);
+                    colorDiv.addEventListener('dragend', handleDragEnd);
+                    colorDiv.addEventListener('dragenter', handleDragEnter);
+                    colorDiv.addEventListener('dragleave', handleDragLeave);
+                }
+                
+                container.appendChild(colorDiv);
+            });
+
+            if (containerId === 'newPalette' && colors.length < 6) {
+                const addButton = document.createElement('div');
+                addButton.className = 'add-color';
+                addButton.textContent = '+';
+                addButton.onclick = addColor;
+                container.appendChild(addButton);
+            }
+        }
+
+        function addColor() {
+            if (newPaletteColors.length >= 6) return;
+            
+            // Add a default black color
+            newPaletteColors.push({ r: 0, g: 0, b: 0 });
+            displayNewPalette();
+            updateReplaceButton();
+        }
+
+        function changeColor(index) {
+            currentEditingIndex = index;
+            const currentColor = newPaletteColors[index];
+            const hex = `#${currentColor.r.toString(16).padStart(2, '0')}${currentColor.g.toString(16).padStart(2, '0')}${currentColor.b.toString(16).padStart(2, '0')}`;
+            
+            document.getElementById('modalColorPicker').value = hex;
+            document.getElementById('colorModal').style.display = 'flex';
+        }
+
+        function setColor() {
+            const hex = document.getElementById('modalColorPicker').value;
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            
+            newPaletteColors[currentEditingIndex] = { r, g, b };
+            displayNewPalette();
+            updateReplaceButton();
+            
+            document.getElementById('colorModal').style.display = 'none';
+            currentEditingIndex = -1;
+        }
+
+        function cancelColorChange() {
+            document.getElementById('colorModal').style.display = 'none';
+            currentEditingIndex = -1;
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('colorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cancelColorChange();
+            }
+        });
+
+        function copyOriginalPalette() {
+            if (originalPaletteColors.length === 0) return;
+            
+            newPaletteColors = [...originalPaletteColors]; // Deep copy the array
+            displayNewPalette();
+            updateReplaceButton();
+        }
+
+        function copyGamePalette() {
+            // Game palette: 000000, 141414, 191919, adadad, ffffff, ffffff
+            newPaletteColors = [
+                { r: 0, g: 0, b: 0 },           // #000000
+                { r: 20, g: 20, b: 20 },        // #141414
+                { r: 25, g: 25, b: 25 },        // #191919
+                { r: 173, g: 173, b: 173 },     // #adadad
+                { r: 255, g: 255, b: 255 },     // #ffffff
+                { r: 255, g: 255, b: 255 }      // #ffffff (duplicate)
+            ];
+            displayNewPalette();
+            updateReplaceButton();
+        }
+
+        function removeColor(index) {
+            newPaletteColors.splice(index, 1);
+            displayNewPalette();
+            updateReplaceButton();
+        }
+
+        // Drag and Drop functionality
+        let draggedElement = null;
+        let draggedIndex = null;
+
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            draggedIndex = parseInt(e.target.dataset.index);
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            if (e.target.classList.contains('color-item') && e.target !== draggedElement) {
+                e.target.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave(e) {
+            e.target.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+
+            if (draggedElement !== e.target && e.target.classList.contains('color-item')) {
+                const targetIndex = parseInt(e.target.dataset.index);
+                
+                // Swap colors
+                const draggedColor = newPaletteColors[draggedIndex];
+                const targetColor = newPaletteColors[targetIndex];
+                
+                newPaletteColors[draggedIndex] = targetColor;
+                newPaletteColors[targetIndex] = draggedColor;
+                
+                displayNewPalette();
+            }
+            
+            e.target.classList.remove('drag-over');
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.drag-over').forEach(el => {
+                el.classList.remove('drag-over');
+            });
+        }
+
+        function displayNewPalette() {
+            displayPalette('newPalette', newPaletteColors);
+        }
+
+        function clearNewPalette() {
+            newPaletteColors = [];
+            displayNewPalette();
+            updateReplaceButton();
+        }
+
+        function updateReplaceButton() {
+            const replaceBtn = document.getElementById('replaceBtn');
+            replaceBtn.disabled = !originalImageData || originalPaletteColors.length === 0 || newPaletteColors.length !== 6;
+        }
+
+        function colorDistance(c1, c2) {
+            return Math.sqrt(
+                Math.pow(c1.r - c2.r, 2) +
+                Math.pow(c1.g - c2.g, 2) +
+                Math.pow(c1.b - c2.b, 2)
+            );
+        }
+
+        function findClosestColor(color, palette) {
+            let minDistance = Infinity;
+            let closestColor = palette[0];
+
+            for (const paletteColor of palette) {
+                const distance = colorDistance(color, paletteColor);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestColor = paletteColor;
+                }
+            }
+
+            return closestColor;
+        }
+
+        function replacePalette() {
+            if (!originalImageData || originalPaletteColors.length === 0 || newPaletteColors.length !== 6) return;
+
+            const resultCanvas = document.getElementById('resultCanvas');
+            const ctx = resultCanvas.getContext('2d');
+            
+            resultCanvas.width = originalImageData.width;
+            resultCanvas.height = originalImageData.height;
+            
+            const newImageData = ctx.createImageData(originalImageData.width, originalImageData.height);
+            const originalData = originalImageData.data;
+            const newData = newImageData.data;
+
+            // Create color mapping - direct 1:1 mapping by index
+            for (let i = 0; i < originalData.length; i += 4) {
+                const r = originalData[i];
+                const g = originalData[i + 1];
+                const b = originalData[i + 2];
+                const a = originalData[i + 3];
+
+                const originalColor = { r, g, b };
+                
+                // Find closest color in original palette
+                let minDistance = Infinity;
+                let closestIndex = 0;
+
+                for (let j = 0; j < originalPaletteColors.length; j++) {
+                    const distance = colorDistance(originalColor, originalPaletteColors[j]);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestIndex = j;
+                    }
+                }
+
+                // Map to the same index in new palette
+                const mappedColor = newPaletteColors[closestIndex];
+                
+                newData[i] = mappedColor.r;
+                newData[i + 1] = mappedColor.g;
+                newData[i + 2] = mappedColor.b;
+                newData[i + 3] = a;
+            }
+
+            ctx.putImageData(newImageData, 0, 0);
+            
+            // Show download button
+            document.getElementById('downloadBtn').style.display = 'inline-block';
+            document.getElementById('downloadBtn').disabled = false;
+        }
+
+        function downloadImage() {
+            const canvas = document.getElementById('resultCanvas');
+            const link = document.createElement('a');
+            link.download = 'palette-replaced-image.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+</body>
+</html>
