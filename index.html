@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8f9fa;
             min-height: 100vh;
             padding: 20px;
         }
@@ -21,11 +21,11 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
         }
 
         .main-layout {
@@ -47,13 +47,11 @@
 
         h1 {
             text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #212529;
+            margin-bottom: 40px;
+            font-size: 2.2em;
+            font-weight: 600;
+            letter-spacing: -0.5px;
         }
 
 
@@ -66,17 +64,18 @@
         }
 
         .palette-container {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e9ecef;
         }
 
         .palette-title {
-            font-size: 1.3em;
+            font-size: 1.1em;
             font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 15px;
+            color: #495057;
+            margin-bottom: 16px;
             text-align: center;
         }
 
@@ -155,27 +154,38 @@
         }
 
         button {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: #6c757d;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 1.1em;
-            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         button:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+        }
+
+        #replaceBtn {
+            background: #28a745;
+            font-weight: 600;
+            padding: 12px 24px;
+            font-size: 1em;
+        }
+
+        #replaceBtn:hover {
+            background: #218838;
         }
 
         .image-container {
@@ -191,33 +201,35 @@
         }
 
         .image-box {
-            background: white;
-            border-radius: 15px;
+            background: #ffffff;
+            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e9ecef;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
 
         .image-box h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.2em;
+            color: #495057;
+            margin-bottom: 16px;
+            font-size: 1.1em;
+            font-weight: 600;
         }
 
         canvas {
             max-width: 100%;
             height: auto;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             cursor: pointer;
         }
 
         canvas:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             z-index: 10;
         }
 
@@ -320,18 +332,20 @@
 
         /* Image selector section */
         .image-selector {
-            background: white;
-            border-radius: 15px;
+            background: #ffffff;
+            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e9ecef;
+            margin-bottom: 20px;
         }
 
         .image-selector h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
+            color: #495057;
+            margin-bottom: 16px;
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.1em;
+            font-weight: 600;
         }
 
         .image-options {
@@ -342,42 +356,42 @@
         }
 
         .image-option {
-            border: 2px solid #eee;
-            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
             padding: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
+            transition: all 0.2s ease;
+            background: #ffffff;
             text-align: center;
             min-width: 120px;
         }
 
         .image-option.upload-option {
-            border: 2px dashed #ccc;
-            background: #f9f9f9;
+            border: 2px dashed #dee2e6;
+            background: #f8f9fa;
             min-width: 80px;
         }
 
         .image-option.upload-option:hover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.05);
         }
 
         .image-option.upload-option .upload-icon {
             font-size: 2em;
-            color: #666;
+            color: #6c757d;
             margin-bottom: 5px;
         }
 
         .image-option:hover {
-            border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            border-color: #28a745;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
         }
 
         .image-option.selected {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.05);
         }
 
         .image-option img {
@@ -390,25 +404,27 @@
         }
 
         .image-option-name {
-            font-weight: 600;
-            color: #2c3e50;
+            font-weight: 500;
+            color: #495057;
             font-size: 0.85em;
         }
 
         /* Example palettes section - more compact */
         .example-palettes {
-            background: white;
-            border-radius: 15px;
+            background: #ffffff;
+            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e9ecef;
+            margin-bottom: 20px;
         }
 
         .example-palettes h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
+            color: #495057;
+            margin-bottom: 16px;
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.1em;
+            font-weight: 600;
         }
 
         .palette-grid {
@@ -419,32 +435,26 @@
         }
 
         .palette-option {
-            border: 2px solid #eee;
-            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
             padding: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
+            transition: all 0.2s ease;
+            background: #ffffff;
         }
 
         .palette-option:hover {
-            border-color: #667eea;
+            border-color: #28a745;
             transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 2px 6px rgba(40, 167, 69, 0.15);
         }
 
         .palette-option.selected {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.05);
         }
 
-        .palette-name {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 8px;
-            text-align: center;
-            font-size: 0.8em;
-        }
+
 
         .palette-preview {
             display: flex;
@@ -460,29 +470,7 @@
             border: 1px solid #ddd;
         }
 
-        .apply-palette-btn {
-            width: 100%;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
 
-        .apply-palette-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-        }
-
-        .apply-palette-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
     </style>
 </head>
 <body>
@@ -516,7 +504,7 @@
                     </div>
 
                     <div class="palette-container">
-                        <div class="palette-title">New Palette</div>
+                        <div class="palette-title">Edit Palette</div>
                         <div class="palette-colors" id="newPalette">
                             <div class="add-color" onclick="addColor()">+</div>
                         </div>
@@ -568,7 +556,6 @@
         // Example palettes data
         const examplePalettes = [
             {
-                name: "Classic Game",
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
                     { r: 20, g: 20, b: 20 },        // Dark grey
@@ -579,7 +566,6 @@
                 ]
             },
             {
-                name: "Warm Sunset",
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
                     { r: 51, g: 25, b: 0 },         // Dark brown
@@ -590,7 +576,6 @@
                 ]
             },
             {
-                name: "Cool Ocean",
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
                     { r: 0, g: 25, b: 51 },         // Dark blue
@@ -601,7 +586,6 @@
                 ]
             },
             {
-                name: "Forest Green",
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
                     { r: 0, g: 25, b: 0 },          // Dark green
@@ -612,7 +596,6 @@
                 ]
             },
             {
-                name: "Purple Dream",
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
                     { r: 25, g: 0, b: 51 },         // Dark purple
@@ -623,7 +606,6 @@
                 ]
             },
             {
-                name: "Fire Red",
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
                     { r: 51, g: 0, b: 0 },          // Dark red
@@ -634,7 +616,6 @@
                 ]
             },
             {
-                name: "Golden Hour",
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
                     { r: 51, g: 25, b: 0 },         // Dark brown
@@ -645,12 +626,92 @@
                 ]
             },
             {
-                name: "Arctic Blue",
                 colors: [
                     { r: 0, g: 0, b: 0 },           // Black
                     { r: 0, g: 25, b: 51 },         // Dark blue
                     { r: 0, g: 51, b: 102 },        // Blue
                     { r: 173, g: 216, b: 230 },     // Light blue
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            // New experimental palettes
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 30, g: 15, b: 45 },        // Dark purple-grey
+                    { r: 60, g: 30, b: 90 },        // Purple-grey
+                    { r: 120, g: 60, b: 180 },      // Light purple
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 45, g: 30, b: 15 },        // Dark brown-grey
+                    { r: 90, g: 60, b: 30 },        // Brown-grey
+                    { r: 180, g: 120, b: 60 },      // Light brown
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 15, g: 30, b: 45 },        // Dark blue-grey
+                    { r: 30, g: 60, b: 90 },        // Blue-grey
+                    { r: 60, g: 120, b: 180 },      // Light blue
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 30, g: 45, b: 15 },        // Dark green-grey
+                    { r: 60, g: 90, b: 30 },        // Green-grey
+                    { r: 120, g: 180, b: 60 },      // Light green
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 45, g: 15, b: 30 },        // Dark red-grey
+                    { r: 90, g: 30, b: 60 },        // Red-grey
+                    { r: 180, g: 60, b: 120 },      // Light red
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 20, g: 20, b: 20 },        // Dark grey
+                    { r: 40, g: 40, b: 40 },        // Medium grey
+                    { r: 80, g: 80, b: 80 },        // Light grey
+                    { r: 160, g: 160, b: 160 },     // Lighter grey
+                    { r: 255, g: 255, b: 255 }      // White
+                ]
+            },
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 25, g: 25, b: 0 },         // Dark yellow-grey
+                    { r: 50, g: 50, b: 0 },         // Yellow-grey
+                    { r: 100, g: 100, b: 0 },       // Light yellow
+                    { r: 255, g: 255, b: 255 },     // White
+                    { r: 255, g: 255, b: 255 }      // White (accent)
+                ]
+            },
+            {
+                colors: [
+                    { r: 0, g: 0, b: 0 },           // Black
+                    { r: 15, g: 15, b: 30 },        // Dark cyan-grey
+                    { r: 30, g: 30, b: 60 },        // Cyan-grey
+                    { r: 60, g: 60, b: 120 },       // Light cyan
                     { r: 255, g: 255, b: 255 },     // White
                     { r: 255, g: 255, b: 255 }      // White (accent)
                 ]
@@ -767,10 +828,6 @@
                 paletteOption.className = 'palette-option';
                 paletteOption.dataset.index = index;
 
-                const paletteName = document.createElement('div');
-                paletteName.className = 'palette-name';
-                paletteName.textContent = palette.name;
-
                 const palettePreview = document.createElement('div');
                 palettePreview.className = 'palette-preview';
 
@@ -781,14 +838,8 @@
                     palettePreview.appendChild(colorPreview);
                 });
 
-                const applyBtn = document.createElement('button');
-                applyBtn.className = 'apply-palette-btn';
-                applyBtn.textContent = 'Apply';
-                applyBtn.onclick = () => applyExamplePalette(index);
-
-                paletteOption.appendChild(paletteName);
                 paletteOption.appendChild(palettePreview);
-                paletteOption.appendChild(applyBtn);
+                paletteOption.onclick = () => applyExamplePalette(index);
 
                 grid.appendChild(paletteOption);
             });
